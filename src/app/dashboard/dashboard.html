@@ -1,0 +1,34 @@
+<mat-sidenav-container class="dashboard-container">
+  <!-- Sidebar -->
+  <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav" fixedInViewport
+    [class.absolute-overlay]="isMobile">
+    <!-- Sidebar header -->
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Boards</h2>
+      <div class="sidebar-actions">
+        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+        <button *ngIf="isMobile" mat-icon-button (click)="toggleSidebar()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Board list -->
+    <app-board-list (boardClicked)="closeIfMobile()"></app-board-list>
+  </mat-sidenav>
+
+  <!-- Main content -->
+  <mat-sidenav-content>
+    <!-- Mobile toggle button -->
+    <div *ngIf="isMobile" class="mobile-toggle">
+      <button mat-icon-button (click)="toggleSidebar()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

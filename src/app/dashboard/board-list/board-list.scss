@@ -1,0 +1,12 @@
+mat-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+mat-list-item {
+  cursor: pointer;
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}

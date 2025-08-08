@@ -1,0 +1,11 @@
+<mat-card *ngIf="board$ | async as board" class="board-card">
+  <mat-card-header>
+    <mat-card-title>{{ board.title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ board.description || 'No description' }}</p>
+    <p>Owner: {{ board.owner }}</p>
+    <!-- <p>Members: {{ board.members.map(m => m.userId).join(', ') }}</p> -->
+    <p>Created: {{ board.createdAt | date }}</p>
+  </mat-card-content>
+</mat-card>

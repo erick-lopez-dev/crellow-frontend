@@ -1,0 +1,118 @@
+.wrapper{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+.link-container{
+  padding-top: 1rem;
+    color: rgb(67, 67, 67);
+}
+.link-container a {
+  text-decoration: none;
+  color: rgb(34, 109, 96);
+}
+.link-container a:hover{
+    color: rgb(54, 181, 160);
+}
+.go-back-btn img{
+  height: 1.8rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  
+}
+.auth-container {
+  position: relative;
+  flex-grow: 1;
+  max-width: 450px;    
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: white;
+  color: var(--text);
+
+  h2 {
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .input-container{
+        position: relative;
+      }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-weight: 500;
+
+      input {
+        padding: 0.6rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: Arial, sans-serif;
+      }
+    }
+
+    .error {
+    font-size: 0.85rem;
+    color: white;
+    position: absolute;
+    bottom: -2.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(244, 113, 113);
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.3rem;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .error::after {
+    content: '';
+    position: absolute;
+    top: -0.7rem; /* pincho más cerca del error */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent rgb(244, 113, 113) transparent;
+  }
+
+
+    .success {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 0.7rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      color: var(--bg);
+      cursor: pointer;
+      transition: 0.3s;
+      background-color: #212121;
+      &:hover {
+        background-color: #2b2b2b;
+      }
+
+      &:disabled {
+        background-color: var(--gray);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
