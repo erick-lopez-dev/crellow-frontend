@@ -1,15 +1,17 @@
-
-@if(errorMessage){
-    <div class="error">{{ errorMessage }}</div>
+@if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
 }
-    <mat-nav-list>
-  <mat-list-item *ngFor="let board of boards$ | async" (click)="onBoardClick(board.id)">
-    {{ board.title }}
-  </mat-list-item>
-  @if ((boards$ | async)?.length === 0 && !errorMessage) {
-    <mat-list-item >
-    No boards available
-  </mat-list-item>
+
+<mat-nav-list>
+  @for (board of boards$ | async; track board._id) {
+    <mat-list-item (click)="onBoardClick(board)">
+      {{ board.title }}
+    </mat-list-item>
   }
   
+  @if ((boards$ | async)?.length === 0 && !errorMessage) {
+    <mat-list-item>
+      No boards available
+    </mat-list-item>
+  }
 </mat-nav-list>

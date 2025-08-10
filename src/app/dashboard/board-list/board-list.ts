@@ -7,18 +7,17 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 interface Board {
-  id: string;
+  _id: string;
   title: string;
   description?: string;
   owner: string;
-  members: { userId: string }[];
   createdAt: string;
 }
 
 @Component({
   selector: 'app-board-list',
   standalone: true,
-  imports: [CommonModule, MatListModule, RouterModule],
+  imports: [CommonModule, MatListModule, RouterModule, RouterModule],
   templateUrl: './board-list.html',
   styleUrls: ['./board-list.scss']
 })
@@ -43,8 +42,10 @@ export class BoardList implements OnInit {
     );
   }
 
-  onBoardClick(boardId: string) {
-    this.boardClicked.emit();
-    this.router.navigate(['/dashboard/board', boardId]);
-  }
+  onBoardClick(board: Board) {
+  console.log('Board recibido:', board);
+  console.log('ID:', board._id);
+  this.router.navigate(['/dashboard/boards', board._id]);
+}
+
 }

@@ -1,11 +1,19 @@
-<mat-card *ngIf="board$ | async as board" class="board-card">
+<mat-card *ngIf="board" class="board-card">
   <mat-card-header>
     <mat-card-title>{{ board.title }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <p>{{ board.description || 'No description' }}</p>
     <p>Owner: {{ board.owner }}</p>
-    <!-- <p>Members: {{ board.members.map(m => m.userId).join(', ') }}</p> -->
+    <!-- <p>Members: {{ board.members.map(m => m.userId).join(', ') }}</p>  -->
     <p>Created: {{ board.createdAt | date }}</p>
+    @for(list of board.lists; track list._id){
+      <div>
+        {{list.title}}
+      </div>
+      @for(card of list.cards; track card._id){
+          <div>first random card for to-do</div>
+      }
+    }
   </mat-card-content>
 </mat-card>

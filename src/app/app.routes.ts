@@ -15,7 +15,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: Dashboard,
     children: [
-      { path: 'board/:id', component: BoardDetail }
+      { path: 'boards/:id', component: BoardDetail }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
