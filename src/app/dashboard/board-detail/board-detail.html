@@ -1,5 +1,6 @@
-<!-- board-detail/board-detail.component.html (added guard to prevent rendering before dropListIds is ready) -->
+<!-- Updated: board-detail/board-detail.component.html (added error message display) -->
 <div *ngIf="isLoading" class="loading">Cargando board...</div>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 <mat-card *ngIf="board && !isLoading" class="board-card">
   <mat-card-header>
@@ -8,10 +9,8 @@
   </mat-card-header>
   <mat-card-content>
     <p>Propietario: {{ board.owner }}</p>
-    <!-- <p>Miembros: {{ board.members.length > 0 ? board.members.map(m => m.userId).join(', ') : 'Ninguno' }}</p> -->
     <p>Creado: {{ board.createdAt | date: 'medium' }}</p>
 
-    <!-- Only render drag-drop when dropListIds is ready -->
     <div *ngIf="dropListIds.length > 0"
          cdkDropList
          cdkDropListOrientation="horizontal"
@@ -22,6 +21,13 @@
         <mat-card cdkDrag class="list-card">
           <mat-card-header>
             <mat-card-title cdkDragHandle>{{ list.title }}</mat-card-title>
+            <button mat-icon-button [matMenuTriggerFor]="listMenu" class="menu-button">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #listMenu="matMenu">
+              <button mat-menu-item (click)="editList(list)">Edit</button>
+              <button mat-menu-item (click)="deleteList(list)">Delete</button>
+            </mat-menu>
           </mat-card-header>
           <mat-card-content>
             <div cdkDropList
@@ -32,7 +38,16 @@
                  (cdkDropListDropped)="dropCard($event)">
               @for (card of list.cards; track card._id) {
                 <mat-card cdkDrag class="card-card">
-                  <mat-card-title cdkDragHandle>{{ card.title }}</mat-card-title>
+                  <mat-card-header>
+                    <mat-card-title cdkDragHandle>{{ card.title }}</mat-card-title>
+                    <button mat-icon-button [matMenuTriggerFor]="cardMenu" class="menu-button">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #cardMenu="matMenu">
+                      <button mat-menu-item (click)="editCard(list, card)">Edit</button>
+                      <button mat-menu-item (click)="deleteCard(list, card)">Delete</button>
+                    </mat-menu>
+                  </mat-card-header>
                   <mat-card-content>
                     <p>{{ card.description || 'Sin descripción' }}</p>
                     @if (card.members && card.members.length > 0) {
@@ -65,6 +80,7 @@
                 <p>No hay tarjetas en esta lista.</p>
               }
             </div>
+            <button mat-button color="primary" (click)="createCard(list)">Add Card</button>
           </mat-card-content>
         </mat-card>
       }
@@ -72,5 +88,6 @@
         <p>No hay listas en este board.</p>
       }
     </div>
+    <button mat-button color="primary" (click)="createList()">Add List</button>
   </mat-card-content>
 </mat-card>

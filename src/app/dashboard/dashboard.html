@@ -1,3 +1,4 @@
+<!-- Updated: dashboard/dashboard.html -->
 <mat-sidenav-container class="dashboard-container">
   <!-- Sidebar -->
   <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="sidenav" fixedInViewport
@@ -5,6 +6,9 @@
     <!-- Sidebar header -->
     <div class="sidebar-header">
       <h2 class="sidebar-title">Boards</h2>
+      <button mat-icon-button (click)="openCreateBoardDialog()" title="Create New Board">
+        <mat-icon>add</mat-icon>
+      </button>
       <div class="sidebar-actions">
         <button mat-raised-button color="warn" (click)="logout()">Logout</button>
         <button *ngIf="isMobile" mat-icon-button (click)="toggleSidebar()">
