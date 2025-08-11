@@ -8,7 +8,7 @@ export interface FullBoard {
     createdAt: string;
 }
 
-interface List {
+export interface List {
     _id: string;
     title: string;
     boardId: string;
@@ -17,12 +17,12 @@ interface List {
     cards: Card[];
 }
 
-interface Card {
+export interface Card {
     _id: string;
     title: string;
     description?: string;
     listId: string;
-    memebers?: {userId: string}[];
+    members?: { userId: string }[];
     labelIds?: string[];
     dueDate?: string;
     position: number;

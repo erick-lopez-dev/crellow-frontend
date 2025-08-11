@@ -1,19 +1,76 @@
-<mat-card *ngIf="board" class="board-card">
+<!-- board-detail/board-detail.component.html (added guard to prevent rendering before dropListIds is ready) -->
+<div *ngIf="isLoading" class="loading">Cargando board...</div>
+
+<mat-card *ngIf="board && !isLoading" class="board-card">
   <mat-card-header>
     <mat-card-title>{{ board.title }}</mat-card-title>
+    <mat-card-subtitle>{{ board.description || 'Sin descripción' }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>{{ board.description || 'No description' }}</p>
-    <p>Owner: {{ board.owner }}</p>
-    <!-- <p>Members: {{ board.members.map(m => m.userId).join(', ') }}</p>  -->
-    <p>Created: {{ board.createdAt | date }}</p>
-    @for(list of board.lists; track list._id){
-      <div>
-        {{list.title}}
-      </div>
-      @for(card of list.cards; track card._id){
-          <div>first random card for to-do</div>
+    <p>Propietario: {{ board.owner }}</p>
+    <!-- <p>Miembros: {{ board.members.length > 0 ? board.members.map(m => m.userId).join(', ') : 'Ninguno' }}</p> -->
+    <p>Creado: {{ board.createdAt | date: 'medium' }}</p>
+
+    <!-- Only render drag-drop when dropListIds is ready -->
+    <div *ngIf="dropListIds.length > 0"
+         cdkDropList
+         cdkDropListOrientation="horizontal"
+         [cdkDropListData]="board.lists"
+         class="lists-container"
+         (cdkDropListDropped)="dropList($event)">
+      @for (list of board.lists; track list._id) {
+        <mat-card cdkDrag class="list-card">
+          <mat-card-header>
+            <mat-card-title cdkDragHandle>{{ list.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div cdkDropList
+                 [id]="'list-' + list._id"
+                 [cdkDropListData]="list.cards"
+                 [cdkDropListConnectedTo]="dropListIds"
+                 class="card-list"
+                 (cdkDropListDropped)="dropCard($event)">
+              @for (card of list.cards; track card._id) {
+                <mat-card cdkDrag class="card-card">
+                  <mat-card-title cdkDragHandle>{{ card.title }}</mat-card-title>
+                  <mat-card-content>
+                    <p>{{ card.description || 'Sin descripción' }}</p>
+                    @if (card.members && card.members.length > 0) {
+                      <div class="members">
+                        Miembros:
+                        <mat-chip-listbox>
+                          @for (member of card.members; track member.userId) {
+                            <mat-chip>{{ member.userId }}</mat-chip>
+                          }
+                        </mat-chip-listbox>
+                      </div>
+                    }
+                    @if (card.labelIds && card.labelIds.length > 0) {
+                      <div class="labels">
+                        Etiquetas:
+                        <mat-chip-listbox>
+                          @for (label of card.labelIds; track label) {
+                            <mat-chip color="primary">{{ label }}</mat-chip>
+                          }
+                        </mat-chip-listbox>
+                      </div>
+                    }
+                    @if (card.dueDate) {
+                      <p>Fecha límite: {{ card.dueDate | date: 'shortDate' }}</p>
+                    }
+                  </mat-card-content>
+                </mat-card>
+              }
+              @empty {
+                <p>No hay tarjetas en esta lista.</p>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
       }
-    }
+      @empty {
+        <p>No hay listas en este board.</p>
+      }
+    </div>
   </mat-card-content>
 </mat-card>
