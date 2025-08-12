@@ -1,12 +1,19 @@
-mat-nav-list {
+.item {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
-mat-list-item {
+.board-title {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   cursor: pointer;
-  &:hover {
-    background-color: #e0e0e0;
-  }
+  
+}
+
+.menu-button {
+  flex-shrink: 0;
 }

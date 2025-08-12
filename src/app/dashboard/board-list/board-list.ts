@@ -17,27 +17,8 @@ import { catchError } from 'rxjs/operators';
   selector: 'app-board-list',
   standalone: true,
   imports: [CommonModule, MatListModule, MatIconModule, MatMenuModule, MatButtonModule, RouterModule],
-  template: `
-    <mat-list>
-      <mat-list-item *ngFor="let board of boards$ | async" (click)="onBoardClick(board)">
-        <span matListItemTitle class="board-title">{{ board.title }}</span>
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button" (click)="$event.stopPropagation()">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="$event.stopPropagation(); editBoard(board)">Edit</button>
-          <button mat-menu-item (click)="$event.stopPropagation(); deleteBoard(board)">Delete</button>
-        </mat-menu>
-      </mat-list-item>
-    </mat-list>
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  `,
-  styles: [
-    `.board-title { flex: 1; }`,
-    `.menu-button { margin-left: auto; }`,
-    `mat-list-item { cursor: pointer; }`,
-    `.error-message { color: red; padding: 16px; }`
-  ]
+  templateUrl: './board-list.html',
+  styleUrls: ['./board-list.scss']
 })
 export class BoardList implements OnInit {
   @Output() boardClicked = new EventEmitter<void>();

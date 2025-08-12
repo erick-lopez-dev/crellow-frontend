@@ -3,13 +3,16 @@
 <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 <mat-card *ngIf="board && !isLoading" class="board-card">
-  <mat-card-header>
-    <mat-card-title>{{ board.title }}</mat-card-title>
+  <mat-card-header class="header-container">
+    <mat-card-title class="board-detail-title">{{ board.title }}</mat-card-title>
     <mat-card-subtitle>{{ board.description || 'Sin descripción' }}</mat-card-subtitle>
+    <div class="board-detail-data">
+      <p>Propietario: {{ board.owner }}</p>
+    <p>Creado: {{ board.createdAt | date: 'medium' }}</p>
+    </div>
   </mat-card-header>
   <mat-card-content>
-    <p>Propietario: {{ board.owner }}</p>
-    <p>Creado: {{ board.createdAt | date: 'medium' }}</p>
+    
 
     <div *ngIf="dropListIds.length > 0"
          cdkDropList
@@ -18,9 +21,9 @@
          class="lists-container"
          (cdkDropListDropped)="dropList($event)">
       @for (list of board.lists; track list._id) {
-        <mat-card cdkDrag class="list-card">
-          <mat-card-header>
-            <mat-card-title cdkDragHandle>{{ list.title }}</mat-card-title>
+        <mat-card cdkDrag class="list-card" >
+          <mat-card-header cdkDragHandle >
+            <mat-card-title >{{ list.title }}</mat-card-title>
             <button mat-icon-button [matMenuTriggerFor]="listMenu" class="menu-button">
               <mat-icon>more_vert</mat-icon>
             </button>

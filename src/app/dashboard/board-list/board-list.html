@@ -1,17 +1,18 @@
-@if (errorMessage) {
-  <div class="error">{{ errorMessage }}</div>
-}
+<mat-list>
+  <mat-list-item *ngFor="let board of boards$ | async" (click)="onBoardClick(board)">
+    <div class="item">
+      <span class="board-title">{{ board.title }}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button" 
+              (click)="$event.stopPropagation()">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
 
-<mat-nav-list>
-  @for (board of boards$ | async; track board._id) {
-    <mat-list-item (click)="onBoardClick(board)">
-      {{ board.title }}
-    </mat-list-item>
-  }
-  
-  @if ((boards$ | async)?.length === 0 && !errorMessage) {
-    <mat-list-item>
-      No boards available
-    </mat-list-item>
-  }
-</mat-nav-list>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="$event.stopPropagation(); editBoard(board)">Edit</button>
+      <button mat-menu-item (click)="$event.stopPropagation(); deleteBoard(board)">Delete</button>
+    </mat-menu>
+  </mat-list-item>
+</mat-list>
+
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
