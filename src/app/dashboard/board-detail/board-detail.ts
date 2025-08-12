@@ -1,7 +1,7 @@
-// Updated: board-detail/board-detail.component.ts
+// dashboard/board-detail/board-detail.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
@@ -45,6 +45,7 @@ export class BoardDetail implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private boardService: BoardService,
     private listService: ListService,
     private cardService: CardService,
@@ -63,7 +64,7 @@ export class BoardDetail implements OnInit, OnDestroy {
   }
 
   refreshBoard(boardId: string) {
-    this.boardService.getFullBoard(boardId).subscribe({
+    this.boardService.getFullBoard(boardId, boardId).subscribe({
       next: (data: FullBoard) => {
         data.lists.sort((a, b) => a.position - b.position);
         data.lists.forEach(list => {
@@ -72,11 +73,18 @@ export class BoardDetail implements OnInit, OnDestroy {
         this.board = data;
         this.dropListIds = data.lists.map(list => `list-${list._id}`);
         this.isLoading = false;
-        console.log('Board cargado:', data);
+        console.log('Board loaded:', data);
       },
       error: (err) => {
-        console.error('Error cargando board:', err);
-        this.errorMessage = 'Failed to load board';
+        console.error('Error loading board:', err);
+        this.errorMessage = err.error?.message || 'Failed to load board';
+        if (err.status === 404) {
+          this.errorMessage = 'Board not found. It may have been deleted.';
+          this.router.navigate(['/boards'], { queryParams: { error: 'Board not found' } });
+        } else if (err.status === 403) {
+          this.errorMessage = 'You do not have access to this board.';
+          this.router.navigate(['/boards'], { queryParams: { error: 'Access denied' } });
+        }
         this.isLoading = false;
       }
     });
@@ -91,11 +99,11 @@ export class BoardDetail implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.board) {
         const position = this.board.lists.length;
-        this.listService.createList({ title: result.title, boardId: this.board._id, position }).subscribe({
+        this.listService.createList({ title: result.title, boardId: this.board._id, position }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error creating list:', err);
-            this.errorMessage = err.message || 'Failed to create list';
+            this.errorMessage = err.error?.message || 'Failed to create list';
           }
         });
       }
@@ -110,11 +118,11 @@ export class BoardDetail implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.board) {
-        this.listService.updateList(list._id, { title: result.title, boardId: this.board._id }).subscribe({
+        this.listService.updateList(list._id, { title: result.title }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error updating list:', err);
-            this.errorMessage = err.message || 'Failed to update list';
+            this.errorMessage = err.error?.message || 'Failed to update list';
           }
         });
       }
@@ -129,11 +137,23 @@ export class BoardDetail implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.board) {
+        console.log(`Attempting to delete list: ${list._id} from board: ${this.board._id}`);
         this.listService.deleteList(list._id, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error deleting list:', err);
-            this.errorMessage = err.message || 'Failed to delete list';
+            this.errorMessage = err.error?.message || 'Failed to delete list';
+            console.log('Error details:', {
+              listId: list._id,
+              boardId: this.board!._id,
+              error: err.error
+            });
+            if (err.status === 404 && err.error?.message === 'Board not found') {
+              this.router.navigate(['/boards'], { queryParams: { error: 'Board not found' } });
+            } else if (err.status === 403) {
+              this.errorMessage = 'You do not have access to this board.';
+              this.router.navigate(['/boards'], { queryParams: { error: 'Access denied' } });
+            }
           }
         });
       }
@@ -155,13 +175,12 @@ export class BoardDetail implements OnInit, OnDestroy {
           description: result.description, 
           listId: list._id, 
           dueDate, 
-          position,
-          boardId: this.board._id 
-        }).subscribe({
+          position
+        }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error creating card:', err);
-            this.errorMessage = err.message || 'Failed to create card';
+            this.errorMessage = err.error?.message || 'Failed to create card';
           }
         });
       }
@@ -185,13 +204,12 @@ export class BoardDetail implements OnInit, OnDestroy {
         this.cardService.updateCard(card._id, { 
           title: result.title, 
           description: result.description, 
-          dueDate,
-          boardId: this.board._id 
-        }).subscribe({
+          dueDate ,
+        }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error updating card:', err);
-            this.errorMessage = err.message || 'Failed to update card';
+            this.errorMessage = err.error?.message || 'Failed to update card';
           }
         });
       }
@@ -206,11 +224,32 @@ export class BoardDetail implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.board) {
+        console.log(`Attempting to delete card: ${card._id} from board: ${this.board._id}`);
         this.cardService.deleteCard(card._id, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
             console.error('Error deleting card:', err);
-            this.errorMessage = err.message || 'Failed to delete card';
+            this.errorMessage = err.error?.message || 'Failed to delete card';
+            console.log('Error details:', {
+              cardId: card._id,
+              boardId: this.board!._id,
+              error: err.error
+            });
+            if (err.status === 404) {
+              if (err.error?.message === 'Board not found') {
+                this.errorMessage = 'Board not found. It may have been deleted.';
+                this.router.navigate(['/boards'], { queryParams: { error: 'Board not found' } });
+              } else if (err.error?.message === 'Card not found') {
+                this.errorMessage = 'Card not found. It may have been deleted.';
+                this.refreshBoard(this.board!._id); // Refresh to sync state
+              } else if (err.error?.message === 'List not found') {
+                this.errorMessage = 'List not found. It may have been deleted.';
+                this.refreshBoard(this.board!._id);
+              }
+            } else if (err.status === 403) {
+              this.errorMessage = 'You do not have access to this board.';
+              this.router.navigate(['/boards'], { queryParams: { error: 'Access denied' } });
+            }
           }
         });
       }
@@ -228,10 +267,10 @@ export class BoardDetail implements OnInit, OnDestroy {
         position: list.position
       }));
       this.boardService.updateListOrder(this.board._id, orders).subscribe({
-        next: () => console.log('Posiciones de lists actualizadas'),
+        next: () => console.log('List positions updated'),
         error: (err) => {
-          console.error('Error actualizando positions de lists:', err);
-          this.errorMessage = err.message || 'Failed to update list positions';
+          console.error('Error updating list positions:', err);
+          this.errorMessage = err.error?.message || 'Failed to update list positions';
         }
       });
     }
@@ -275,10 +314,10 @@ export class BoardDetail implements OnInit, OnDestroy {
 
     if (this.board && cardOrders.length > 0) {
       this.boardService.updateCardOrder(this.board._id, cardOrders).subscribe({
-        next: () => console.log('Posiciones de cards actualizadas'),
+        next: () => console.log('Card positions updated'),
         error: (err) => {
-          console.error('Error actualizando positions de cards:', err);
-          this.errorMessage = err.message || 'Failed to update card positions';
+          console.error('Error updating card positions:', err);
+          this.errorMessage = err.error?.message || 'Failed to update card positions';
         }
       });
     }

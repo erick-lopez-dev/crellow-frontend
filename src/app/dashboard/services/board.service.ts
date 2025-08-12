@@ -48,8 +48,8 @@ export class BoardService {
     );
   }
 
-  getFullBoard(id: string): Observable<FullBoard> {
-    return this.http.get<FullBoard>(`${this.apiUrl}/${id}/full`);
+  getFullBoard(id: string, boardId: string): Observable<FullBoard> {
+    return this.http.get<FullBoard>(`${this.apiUrl}/${id}/full`, {params: {boardId}});
   }
 
   createBoard(data: { title: string; description?: string }): Observable<Board> {
@@ -62,8 +62,8 @@ export class BoardService {
     );
   }
 
-  updateBoard(id: string, data: { title: string; description?: string }): Observable<Board> {
-    return this.http.patch<Board>(`${this.apiUrl}/${id}`, data).pipe(
+  updateBoard(id: string, data: { title: string; description?: string }, boardId: string): Observable<Board> {
+    return this.http.patch<Board>(`${this.apiUrl}/${id}`, data, {params: {boardId}}).pipe(
       tap(() => this.refreshBoards()),
       catchError(error => {
         console.error('Error updating board:', error);
@@ -72,8 +72,8 @@ export class BoardService {
     );
   }
 
-  deleteBoard(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+  deleteBoard(id: string, boardId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {params: {boardId}}).pipe(
       tap(() => this.refreshBoards()),
       catchError(error => {
         console.error('Error deleting board:', error);

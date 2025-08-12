@@ -80,7 +80,7 @@ export class BoardList implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.boardService.updateBoard(board._id, { title: result.title, description: result.description }).subscribe();
+        this.boardService.updateBoard(board._id, { title: result.title, description: result.description }, board._id).subscribe();
       }
     });
   }
@@ -93,7 +93,7 @@ export class BoardList implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.boardService.deleteBoard(board._id).subscribe();
+        this.boardService.deleteBoard(board._id, board._id).subscribe();
       }
     });
   }
