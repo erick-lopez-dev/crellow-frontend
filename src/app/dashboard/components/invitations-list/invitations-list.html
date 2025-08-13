@@ -1,0 +1,40 @@
+<!-- src/app/dashboard/components/invitationsList.html -->
+<div class="invitations-container">
+  @if (isLoading) {
+    <div class="loading">Loading invitations...</div>
+  }
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+  @if (!isLoading && invitations.length > 0) {
+    <div class="invitations-list">
+      
+      @for (inv of invitations; track inv.id) {
+        @if(!inv.id){
+          <div>NO HAY ID</div>
+        }
+        <div class="invitation-item">
+          <div class="invitation-content">
+            <div class="invitation-title">Invite to {{ inv.boardTitle }}</div>
+            <div class="invitation-detail">From: {{ inv.invitedByUsername }}</div>
+            <div class="invitation-detail">Created: {{ inv.createdAt | date: 'medium' }}</div>
+          </div>
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" (click)="acceptInvitation(inv.id)" title="Accept">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="rejectInvitation(inv.id)" title="Reject">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+  @if (!isLoading && invitations.length === 0) {
+    <div class="empty-inbox">
+      <mat-icon>mail_outline</mat-icon>
+      <p>No pending invitations</p>
+    </div>
+  }
+</div>

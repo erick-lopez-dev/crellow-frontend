@@ -18,6 +18,7 @@ import { FullBoard, List, Card } from './types/fullboard';
 import { ListDialog, ListDialogData } from '../components/list-dialog/list-dialog';
 import { CardDialog, CardDialogData } from '../components/card-dialog/card-dialog';
 import { ConfirmDialog } from '../components/confirm-dialog/confirm-dialog';
+import { InviteDialog, InviteDialogData } from '../components/invite-dialog/invite-dialog';
 
 @Component({
   selector: 'app-board-detail',
@@ -50,7 +51,7 @@ export class BoardDetail implements OnInit, OnDestroy {
     private listService: ListService,
     private cardService: CardService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
@@ -170,11 +171,11 @@ export class BoardDetail implements OnInit, OnDestroy {
       if (result && this.board) {
         const position = list.cards.length;
         const dueDate = result.dueDate ? result.dueDate.toISOString() : undefined;
-        this.cardService.createCard({ 
-          title: result.title, 
-          description: result.description, 
-          listId: list._id, 
-          dueDate, 
+        this.cardService.createCard({
+          title: result.title,
+          description: result.description,
+          listId: list._id,
+          dueDate,
           position
         }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
@@ -190,21 +191,21 @@ export class BoardDetail implements OnInit, OnDestroy {
   editCard(list: List, card: Card) {
     const dialogRef = this.dialog.open(CardDialog, {
       width: '400px',
-      data: { 
-        title: card.title, 
-        description: card.description, 
-        dueDate: card.dueDate ? new Date(card.dueDate) : null, 
-        mode: 'edit' 
+      data: {
+        title: card.title,
+        description: card.description,
+        dueDate: card.dueDate ? new Date(card.dueDate) : null,
+        mode: 'edit'
       } as CardDialogData
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.board) {
         const dueDate = result.dueDate ? result.dueDate.toISOString() : undefined;
-        this.cardService.updateCard(card._id, { 
-          title: result.title, 
-          description: result.description, 
-          dueDate ,
+        this.cardService.updateCard(card._id, {
+          title: result.title,
+          description: result.description,
+          dueDate,
         }, this.board._id).subscribe({
           next: () => this.refreshBoard(this.board!._id),
           error: (err) => {
@@ -322,7 +323,19 @@ export class BoardDetail implements OnInit, OnDestroy {
       });
     }
   }
+  openInviteDialog() {
+    if (!this.board) return;
+    const dialogRef = this.dialog.open(InviteDialog, {
+      width: '400px',
+      data: { boardId: this.board._id } as InviteDialogData
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Invitation sent');
+      }
+    });
+  }
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

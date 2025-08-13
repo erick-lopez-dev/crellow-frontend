@@ -1,0 +1,13 @@
+<!-- src/app/dashboard/components/invite-dialog/invite-dialog.component.html -->
+<mat-dialog-content>
+  <h2>Invite User to Board</h2>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>User Email</mat-label>
+    <input matInput [(ngModel)]="email" required>
+  </mat-form-field>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSend()">Send Invitation</button>
+</mat-dialog-actions>

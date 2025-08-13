@@ -1,4 +1,4 @@
-// Updated: dashboard/dashboard.component.ts
+// Updated: dashboard/dashboard.ts
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -8,10 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BoardList } from './board-list/board-list'; // Updated import
+import { BoardList } from './board-list/board-list';
 import { AuthService } from '../auth/auth.service';
 import { BoardService } from './services/board.service';
 import { BoardDialog, BoardDialogData } from './components/board-dialog/board-dialog';
+import { InvitationNotification } from './components/invitation-notification/invitation-notification';
 
 @Component({
   selector: 'app-dashboard',
@@ -72,6 +73,13 @@ export class Dashboard implements OnInit {
       if (result) {
         this.boardService.createBoard({ title: result.title, description: result.description }).subscribe();
       }
+    });
+  }
+
+  openInvitationNotification() {
+    this.dialog.open(InvitationNotification, {
+      width: '300px',
+      position: { right: '20px', bottom: '20px' }
     });
   }
 }

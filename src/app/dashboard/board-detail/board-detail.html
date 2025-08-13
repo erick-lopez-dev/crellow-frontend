@@ -1,6 +1,11 @@
-<!-- Updated: board-detail/board-detail.component.html (added error message display) -->
-<div *ngIf="isLoading" class="loading">Cargando board...</div>
-<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+<!-- Updated: board-detail/board-detail.component.html (added invite button) -->
+@if(isLoading){
+  <div class="loading">Cargando board...</div>
+}
+@if(errorMessage){
+  <div class="error-message">{{ errorMessage }}</div>
+}
+
 
 <mat-card *ngIf="board && !isLoading" class="board-card">
   <mat-card-header class="header-container">
@@ -10,6 +15,9 @@
       <p>Propietario: {{ board.owner }}</p>
     <p>Creado: {{ board.createdAt | date: 'medium' }}</p>
     </div>
+    <button mat-icon-button (click)="openInviteDialog()" title="Invite User">
+      <mat-icon>person_add</mat-icon>
+    </button>
   </mat-card-header>
   <mat-card-content>
     
@@ -41,8 +49,8 @@
                  (cdkDropListDropped)="dropCard($event)">
               @for (card of list.cards; track card._id) {
                 <mat-card cdkDrag class="card-card">
-                  <mat-card-header>
-                    <mat-card-title cdkDragHandle>{{ card.title }}</mat-card-title>
+                  <mat-card-header cdkDragHandle>
+                    <mat-card-title >{{ card.title }}</mat-card-title>
                     <button mat-icon-button [matMenuTriggerFor]="cardMenu" class="menu-button">
                       <mat-icon>more_vert</mat-icon>
                     </button>

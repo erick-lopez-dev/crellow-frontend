@@ -1,0 +1,72 @@
+/* src/app/dashboard/components/invitationsList.scss */
+.invitations-container {
+  position: relative;
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+}
+
+.invitations-list {
+  width: 100%;
+}
+
+.invitation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+  padding: 0.2rem;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 100%;
+  
+}
+
+.invitation-content {
+  flex: 1;
+}
+
+.invitation-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.invitation-detail {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+mat-icon {
+  font-size: 20px;
+}
+
+.empty-inbox {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.empty-inbox mat-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.empty-inbox p {
+  font-size: 14px;
+  margin: 0;
+}

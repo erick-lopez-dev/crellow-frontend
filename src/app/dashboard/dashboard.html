@@ -21,8 +21,14 @@
     <app-board-list (boardClicked)="closeIfMobile()"></app-board-list>
 
     <div class="bottom-nav">
-      <button class="custom-button" color="warn" (click)="logout()">Logout</button>
-      <button class="notifications">Notificaciones</button>
+      <button mat-icon-button class="icon-logout" (click)="logout()" title="Logout">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+      <button mat-icon-button class="icon-button" (click)="openInvitationNotification()" title="Check Invitations">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      
+      
     </div>
 
   </mat-sidenav>

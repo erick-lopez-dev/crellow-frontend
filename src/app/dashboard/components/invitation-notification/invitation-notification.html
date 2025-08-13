@@ -1,0 +1,18 @@
+<!-- src/app/dashboard/components/invitationNotification.html -->
+<div class="notification-bubble">
+  <div class="notification-header">
+    <h3>Invitations</h3>
+    <button mat-icon-button (click)="closeNotification()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  @if (isLoading) {
+    <div class="loading">Loading...</div>
+  }
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+  <div class="invitations-content">
+    <app-invitations-list [invitations]="invitations" [isLoading]="isLoading" [errorMessage]="errorMessage"></app-invitations-list>
+  </div>
+</div>
