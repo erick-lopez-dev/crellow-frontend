@@ -1,4 +1,3 @@
-// Updated: board-list/board-list.component.ts (re-added click event handling with router navigation)
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';

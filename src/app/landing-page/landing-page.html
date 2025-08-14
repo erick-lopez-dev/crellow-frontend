@@ -1,1 +1,72 @@
-<p>landing-page works!</p>
+<!-- Header with inverted style -->
+<header class="header">
+  <h1 class="logo">Crellow</h1>
+    <div class="header-actions">
+      <button (click)="navigateToLogin()" class="btn">Log In</button>
+      <button (click)="navigateToRegister()" class="btn btn-primary">Sign Up</button>
+    </div>
+</header>
+
+<!-- Hero Section with Giant Title and Large Image -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Welcome to Crellow</h1>
+    <p>Transform your project management with Crellow, a powerful Trello-inspired tool designed for teams and individuals to streamline workflows and boost productivity.</p>
+    <button (click)="navigateToRegister()" class="btn btn-primary">Start for Free</button>
+    <img src="hero-image.png" alt="Crellow Hero" class="hero-image" />
+  </div>
+</section>
+
+<!-- Product Overview Section (Black Background) -->
+<section class="product-overview">
+  <div class="content">
+    <h2>About Crellow</h2>
+    <p>Crellow is a modern task management solution that brings the best of Trello to your fingertips. Whether you're managing a small personal project or coordinating a large team, Crellow offers an intuitive interface, real-time collaboration, and customizable workflows to keep everything on track.</p>
+    <p>Built with scalability in mind, Crellow integrates seamlessly with your existing tools and provides a robust platform for organizing tasks, tracking progress, and achieving goals.</p>
+  </div>
+</section>
+
+<!-- Features Section (White Background) -->
+<section class="features">
+  <h2>Key Features</h2>
+  <div class="feature-blocks">
+    <div class="feature-block">
+      <h3>Drag-and-Drop Boards</h3>
+      <p>Effortlessly reorder tasks and lists with an intuitive drag-and-drop interface, mirroring Trello's beloved functionality.</p>
+    </div>
+    <div class="feature-block">
+      <h3>Real-Time Updates</h3>
+      <p>Stay in sync with your team with instant updates as tasks are moved, edited, or assigned.</p>
+    </div>
+    <div class="feature-block">
+      <h3>Custom Lists & Cards</h3>
+      <p>Tailor your workspace with customizable lists and cards, including due dates, labels, and member assignments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section (Black Background) -->
+<section class="benefits">
+  <div class="content">
+    <h2>Benefits of Using Crellow</h2>
+    <p><strong>Enhanced Productivity:</strong> Focus on what matters with a clear overview of tasks and priorities.</p>
+    <p><strong>Team Collaboration:</strong> Assign tasks, share updates, and work together in real-time, reducing miscommunication.</p>
+    <p><strong>Flexibility:</strong> Adapt Crellow to any project type, from agile sprints to personal to-do lists.</p>
+    <p><strong>Security:</strong> Rest easy with role-based access and data protection features.</p>
+  </div>
+</section>
+
+<!-- Call to Action Section (White Background) -->
+<section class="call-to-action">
+  <div class="content">
+    <h2>Get Started Today</h2>
+    <p>Join thousands of users who trust Crellow to manage their projects efficiently. Sign up now and experience the difference!</p>
+    <button (click)="navigateToRegister()" class="btn btn-primary">Create Your Account</button>
+    <button (click)="navigateToLogin()" class="btn">Log In</button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2025 Crellow. All rights reserved.</p>
+</footer>

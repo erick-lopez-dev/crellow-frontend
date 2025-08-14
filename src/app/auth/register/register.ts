@@ -49,4 +49,7 @@ export class Register {
       error: (err) => this.errorMessage = err.message
     });
   }
+  goBack() {
+    this.router.navigate(['']);
+  }
 }

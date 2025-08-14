@@ -1,4 +1,3 @@
-// src/app/dashboard/components/invitationsList.ts
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
@@ -13,17 +12,13 @@ import { InvitationService, Invitation } from '../../services/invitations.servic
   templateUrl: './invitations-list.html',
   styleUrls: ['./invitations-list.scss']
 })
-export class InvitationsList implements OnInit {
+export class InvitationsList {
   @Input() invitations: Invitation[] = [];
   @Input() isLoading: boolean = true;
   @Input() errorMessage: string | null = null;
   @Output() invitationUpdated = new EventEmitter<void>(); // Emit event to notify parent of updates
 
   constructor(private invitationService: InvitationService) {}
-
-  ngOnInit() {
-    // Use input data; no need to fetch here
-  }
 
   acceptInvitation(id: string) {
     this.invitationService.updateInvitation(id, 'accepted').subscribe({

@@ -1,30 +1,102 @@
+// Variables
+$primary-color: #1a73e8;
+$button-bg: #212121;
+$text-color: #000;
+$light-gray: #f4f5f6;
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.register-card {
-  width: 400px;
+  min-height: 100vh;
+  background-color: #ececec;
   padding: 20px;
 }
 
-mat-form-field {
+.register-card {
   width: 100%;
-  margin-bottom: 15px;
-}
+  max-width: 400px;
+  background: #fff; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 
-button {
-  width: 100%;
-}
+  mat-card-header {
+    text-align: center;
+    margin-bottom: 20px;
 
-.error {
-  color: red;
-  margin-bottom: 15px;
-}
+    mat-card-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: $text-color; 
+    }
+  }
 
-p {
-  text-align: center;
+  mat-card-content {
+    padding: 0 20px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      mat-form-field {
+        width: 100%;
+
+        mat-label {
+          color: #333; 
+        }
+
+        input {
+          color: $text-color;
+        }
+
+        mat-error {
+          color: #d32f2f; 
+        }
+      }
+
+      .error {
+        color: #d32f2f;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 16px;
+        background: $button-bg; 
+        color: #fff; 
+        
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 20px;
+      color: $text-color; 
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+.go-back-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #313131;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  &:hover{
+    background-color: #474747;
+  }
 }

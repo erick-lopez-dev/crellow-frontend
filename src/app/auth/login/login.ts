@@ -48,4 +48,7 @@ export class Login{
       error: (err) => this.errorMessage = err.message
     });
   }
+  goBack() {
+    this.router.navigate(['']);
+  }
 }

@@ -1,4 +1,3 @@
-// Updated: services/board.service.ts (adjusted interface to use 'id', added error handling if needed, but mainly same)
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -22,7 +21,7 @@ export class BoardService {
   private apiUrl = `${environment.apiUrl}/boards`;
   private boardsSubject = new BehaviorSubject<Board[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUserBoards(): Observable<Board[]> {
     return this.boardsSubject.asObservable();
@@ -49,7 +48,7 @@ export class BoardService {
   }
 
   getFullBoard(id: string, boardId: string): Observable<FullBoard> {
-    return this.http.get<FullBoard>(`${this.apiUrl}/${id}/full`, {params: {boardId}});
+    return this.http.get<FullBoard>(`${this.apiUrl}/${id}/full`, { params: { boardId } });
   }
 
   createBoard(data: { title: string; description?: string }): Observable<Board> {
@@ -63,7 +62,7 @@ export class BoardService {
   }
 
   updateBoard(id: string, data: { title: string; description?: string }, boardId: string): Observable<Board> {
-    return this.http.patch<Board>(`${this.apiUrl}/${id}`, data, {params: {boardId}}).pipe(
+    return this.http.patch<Board>(`${this.apiUrl}/${id}`, data, { params: { boardId } }).pipe(
       tap(() => this.refreshBoards()),
       catchError(error => {
         console.error('Error updating board:', error);
@@ -73,7 +72,7 @@ export class BoardService {
   }
 
   deleteBoard(id: string, boardId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, {params: {boardId}}).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { params: { boardId } }).pipe(
       tap(() => this.refreshBoards()),
       catchError(error => {
         console.error('Error deleting board:', error);
@@ -81,23 +80,13 @@ export class BoardService {
       })
     );
   }
-
-  // Existing methods for orders
-  updateListOrder(boardId: string, orders: { listId: string, position: number }[]): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/${boardId}/lists/order`, { orders }).pipe(
-      catchError(error => {
-        console.error('Error updating list order:', error);
-        throw error;
-      })
-    );
+  updateListOrder(boardId: string, orders: { listId: string; position: number }[]): Observable<any> {
+    console.log(orders)
+    return this.http.patch(`${this.apiUrl}/${boardId}/list-order`, { orders }, {params: {boardId: boardId}});
   }
 
-  updateCardOrder(boardId: string, orders: { cardId: string, listId: string, position: number }[]): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/${boardId}/cards/order`, { orders }).pipe(
-      catchError(error => {
-        console.error('Error updating card order:', error);
-        throw error;
-      })
-    );
+  updateCardOrder(boardId: string, orders: { cardId: string; listId: string; position: number }[]): Observable<any> {
+    console.log(orders)
+    return this.http.patch(`${this.apiUrl}/${boardId}/card-order`, { orders }, {params: {boardId: boardId}});
   }
 }
